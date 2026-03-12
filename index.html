@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Estoque Digital Melão</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="hero">
+        <div>
+          <img src="assets/img/logo.webp" alt="logo" class="logo"/>
+          <p class="eyebrow">CD • Contagem do estoque</p>
+          <h1>Estoque Digital</h1>
+          
+        </div>
+      </header>
+
+      <section id="auth-panel" class="card">
+        <div class="card-header">
+          <h2>Acesso</h2>
+          <p>Entre com seu usuário do CD para começar a contagem.</p>
+        </div>
+        <div class="form-grid">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="seu@email.com" />
+          <label for="password">Senha</label>
+          <input id="password" type="password" placeholder="••••••••" />
+        </div>
+        <div class="actions">
+          <button id="login-btn" class="primary">Entrar</button>
+          <button id="signup-btn" class="ghost">Criar conta</button>
+        </div>
+        <div id="auth-msg" class="msg-area"></div>
+      </section>
+
+      <section id="app-panel" class="hidden">
+        <div class="topbar">
+          <div class="user-chip">
+            <span>Usuário</span>
+            <strong id="user-email">--</strong>
+          </div>
+          <button id="logout-btn" class="ghost">Sair</button>
+        </div>
+
+        <div class="grid">
+          <section class="card">
+            <div class="card-header">
+              <h2>Contexto Travado</h2>
+              <p>Fale setor → marca/produto → número.</p>
+            </div>
+            <div class="context">
+              <div class="context-item">
+                <span>Setor</span>
+                <strong id="ctx-setor">--</strong>
+              </div>
+              <div class="context-item">
+                <span>Produto</span>
+                <strong id="ctx-produto">--</strong>
+              </div>
+              <div class="context-item">
+                <span>Marca</span>
+                <strong id="ctx-marca">--</strong>
+              </div>
+            </div>
+            <div class="context-actions">
+              <label for="setor-select">Alterar setor</label>
+              <select id="setor-select"></select>
+              <button id="clear-context" class="ghost">Limpar contexto</button>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">
+              <h2>Comando por Voz</h2>
+              <p>Use Chrome ou Edge e permita o microfone.</p>
+            </div>
+            <div class="voice">
+              <button id="voice-btn" class="primary">Iniciar escuta</button>
+              <div id="voice-status" class="voice-status">Microfone pronto.</div>
+              <textarea
+                id="voice-last"
+                rows="2"
+                readonly
+                placeholder="Último comando reconhecido..."
+              ></textarea>
+            </div>
+          </section>
+
+          <section class="card full">
+            <div class="card-header">
+              <h2>Comando Manual</h2>
+              <p>Também funciona digitando (ex: “CHÃO”, “ANGEL”, “4”).</p>
+            </div>
+            <div class="command">
+              <input
+                id="command-input"
+                type="text"
+                placeholder="Diga o setor, produto/marca ou apenas o número"
+              />
+              <button id="process-btn" class="primary">Processar</button>
+            </div>
+            <div id="messages" class="msg-area"></div>
+          </section>
+
+          <section class="card full">
+            <div class="card-header">
+              <h2>Itens Contados</h2>
+              <p>Visualização por setor atual.</p>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Marca</th>
+                    <th>Tipo</th>
+                    <th>Caixas/Pallet</th>
+                    <th>Pallets</th>
+                    <th>Total Caixas</th>
+                  </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <div class="total">
+                Total geral do setor: <strong id="total-geral">0</strong>
+              </div>
+              <div class="actions">
+                <button id="export-btn" class="ghost">Exportar CSV</button>
+                <button id="clear-btn" class="danger">Limpar contagem</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>
