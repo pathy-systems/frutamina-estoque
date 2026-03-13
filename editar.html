@@ -1,0 +1,139 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Editar Estoque</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Source+Sans+3:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+  <body data-page="edit">
+    <div class="app">
+      <header class="hero">
+        <div>
+          <img src="assets/img/logo.webp" alt="logo" class="logo" />
+          <p class="eyebrow">CD | Contagem do estoque</p>
+          <h1>Editar Estoque</h1>
+        </div>
+      </header>
+
+      <nav class="menu">
+        <button id="menu-view" class="ghost" data-href="index.html">Visão geral</button>
+        <button id="menu-count" class="primary">Editar estoque</button>
+        <div id="menu-user" class="user-chip hidden">
+          <span>Usuário</span>
+          <strong id="menu-user-email">--</strong>
+        </div>
+        <button id="menu-logout" class="ghost hidden">Sair</button>
+      </nav>
+
+      <section id="auth-panel" class="card">
+        <div class="card-header">
+          <h2>Acesso</h2>
+          <p>Entre com seu usuário do CD para começar a contagem.</p>
+        </div>
+        <div class="form-grid">
+          <label for="email">Usuario</label>
+          <input id="email" type="text" placeholder="Ex: 1234 ou JOAO" />
+          <label for="password">Senha</label>
+          <input id="password" type="password" placeholder="••••••••" />
+        </div>
+        <div class="actions">
+          <button id="login-btn" class="primary">Entrar</button>
+          <button id="signup-btn" class="ghost">Criar conta</button>
+        </div>
+        <div id="auth-msg" class="msg-area"></div>
+      </section>
+
+      <section id="count-panel" class="hidden">
+        <div class="grid">
+          
+          
+          <section class="card full">
+            <div class="card-header">
+              <h2>Itens Contados</h2>
+              <p>Visualização por setor atual.</p>
+            </div>
+            <div class="card-actions">
+              <button id="add-item-btn" class="primary">Adicionar item</button>
+              <button id="edit-item-btn" class="ghost">Editar item</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Produto</th>
+                    <th>Marca</th>
+                    <th>Tipo</th>
+                    <th>Caixas/Pallet</th>
+                    <th>Pallets</th>
+                    <th>Total Caixas</th>
+                    <th>Acoes</th>
+                  </tr>
+                </thead>
+                <tbody id="count-table-body"></tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <div class="total">
+                Total geral do setor: <strong id="count-total-geral">0</strong>
+              </div>
+              <div class="actions">
+                <button id="count-export-btn" class="ghost">Exportar CSV</button>
+                <button id="count-clear-btn" class="danger">Limpar contagem</button>
+              </div>
+            </div>
+          </section>
+          
+
+          
+
+          
+
+          
+        </div>
+      </section>
+    </div>
+
+    <div id="edit-modal" class="modal hidden">
+      <div class="modal-backdrop" id="edit-close"></div>
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="edit-title">Editar item</h3>
+          <button id="edit-close-btn" class="ghost">Fechar</button>
+        </div>
+        <div class="modal-body">
+          <label for="edit-setor">Setor</label>
+          <select id="edit-setor"></select>
+
+          <label for="edit-produto">Produto</label>
+          <input id="edit-produto" type="text" />
+
+          <label for="edit-marca">Marca</label>
+          <input id="edit-marca" type="text" />
+
+          <label for="edit-tipo">Tipo</label>
+          <input id="edit-tipo" type="number" />
+
+          <label for="edit-caixas">Caixas por pallet</label>
+          <input id="edit-caixas" type="number" />
+
+          <label for="edit-pallets">Pallets</label>
+          <input id="edit-pallets" type="number" />
+        </div>
+        <div class="modal-actions">
+          <button id="edit-save" class="primary">Salvar</button>
+        </div>
+        <div id="edit-msg" class="msg-area"></div>
+      </div>
+    </div>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>

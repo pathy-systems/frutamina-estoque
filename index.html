@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Estoque Digital Melão</title>
+    <title>Estoque Digital</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,27 +13,104 @@
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
-  <body>
+  <body data-page="view">
     <div class="app">
       <header class="hero">
         <div>
-          <img src="assets/img/logo.webp" alt="logo" class="logo"/>
-          <p class="eyebrow">CD • Contagem do estoque</p>
+          <img src="assets/img/logo.webp" alt="logo" class="logo" />
+          <p class="eyebrow">CD | Contagem do estoque</p>
           <h1>Estoque Digital</h1>
-          
         </div>
       </header>
 
-      <section id="auth-panel" class="card">
+      <nav class="menu">
+        <button id="menu-view" class="ghost">Visão geral</button>
+        <button id="menu-count" class="primary" data-href="editar.html">Editar estoque</button>
+        <div id="menu-user" class="user-chip hidden">
+          <span>Usuário</span>
+          <strong id="menu-user-email">--</strong>
+        </div>
+        <button id="menu-logout" class="ghost hidden">Sair</button>
+      </nav>
+
+      <section id="public-panel" class="card">
+        <div class="card-header">
+          <h2>Contagem do Estoque</h2>
+          <p>Visualização geral. Para editar o estoque, clique em 'Editar estoque'.</p>
+        </div>
+        <div class="context-actions">
+          <label for="public-search">Pesquisar</label>
+          <input
+            id="public-search"
+            type="text"
+            placeholder="Produto, marca ou tipo"
+          />
+          <button id="public-filter-btn" class="ghost">Filtro</button>
+          <button id="public-refresh" class="ghost">Atualizar</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Marca</th>
+                <th>Tipo</th>
+                <th>Caixas/Pallet</th>
+                <th>Pallets</th>
+                <th>Total Caixas</th>
+              </tr>
+            </thead>
+            <tbody id="public-table-body"></tbody>
+          </table>
+        </div>
+        <div class="table-footer">
+          <div class="total">
+            Total geral do filtro: <strong id="public-total-geral">0</strong>
+          </div>
+          <div class="actions">
+            <button id="public-export-btn" class="ghost">Exportar CSV</button>
+          </div>
+        </div>
+        <div id="public-msg" class="msg-area"></div>
+      </section>
+
+      <div id="filter-modal" class="modal hidden">
+        <div class="modal-backdrop" id="filter-close"></div>
+        <div class="modal-card">
+          <div class="modal-header">
+            <h3>Filtros</h3>
+            <button id="filter-close-btn" class="ghost">Fechar</button>
+          </div>
+          <div class="modal-body">
+            <label for="filter-setor">Setor</label>
+            <select id="filter-setor"></select>
+
+            <label for="filter-produto">Produto</label>
+            <select id="filter-produto"></select>
+
+            <label for="filter-marca">Marca</label>
+            <select id="filter-marca"></select>
+
+            <label for="filter-tipo">Tipo</label>
+            <input id="filter-tipo" type="number" placeholder="Ex: 4" />
+          </div>
+          <div class="modal-actions">
+            <button id="filter-clear" class="ghost">Limpar</button>
+            <button id="filter-apply" class="primary">Aplicar</button>
+          </div>
+        </div>
+      </div>
+
+      <section id="auth-panel" class="card hidden">
         <div class="card-header">
           <h2>Acesso</h2>
-          <p>Entre com seu usuário do CD para começar a contagem.</p>
+          <p>Entre com seu usu?rio do CD para come?ar a contagem.</p>
         </div>
         <div class="form-grid">
-          <label for="email">Email</label>
-          <input id="email" type="email" placeholder="seu@email.com" />
+          <label for="email">Usuario ou numero</label>
+          <input id="email" type="text" placeholder="Ex: 1234 ou JOAO" />
           <label for="password">Senha</label>
-          <input id="password" type="password" placeholder="••••••••" />
+          <input id="password" type="password" placeholder="????????" />
         </div>
         <div class="actions">
           <button id="login-btn" class="primary">Entrar</button>
@@ -42,20 +119,12 @@
         <div id="auth-msg" class="msg-area"></div>
       </section>
 
-      <section id="app-panel" class="hidden">
-        <div class="topbar">
-          <div class="user-chip">
-            <span>Usuário</span>
-            <strong id="user-email">--</strong>
-          </div>
-          <button id="logout-btn" class="ghost">Sair</button>
-        </div>
-
+      <section id="count-panel" class="hidden">
         <div class="grid">
           <section class="card">
             <div class="card-header">
               <h2>Contexto Travado</h2>
-              <p>Fale setor → marca/produto → número.</p>
+              <p>Fale setor ? marca/produto ? n?mero.</p>
             </div>
             <div class="context">
               <div class="context-item">
@@ -90,7 +159,7 @@
                 id="voice-last"
                 rows="2"
                 readonly
-                placeholder="Último comando reconhecido..."
+                placeholder="?ltimo comando reconhecido..."
               ></textarea>
             </div>
           </section>
@@ -98,13 +167,13 @@
           <section class="card full">
             <div class="card-header">
               <h2>Comando Manual</h2>
-              <p>Também funciona digitando (ex: “CHÃO”, “ANGEL”, “4”).</p>
+              <p>Tamb?m funciona digitando (ex: ?CH?O?, ?ANGEL?, ?4?).</p>
             </div>
             <div class="command">
               <input
                 id="command-input"
                 type="text"
-                placeholder="Diga o setor, produto/marca ou apenas o número"
+                placeholder="Diga o setor, produto/marca ou apenas o n?mero"
               />
               <button id="process-btn" class="primary">Processar</button>
             </div>
@@ -114,7 +183,7 @@
           <section class="card full">
             <div class="card-header">
               <h2>Itens Contados</h2>
-              <p>Visualização por setor atual.</p>
+              <p>Visualiza??o por setor atual.</p>
             </div>
             <div class="table-wrap">
               <table>
@@ -128,16 +197,16 @@
                     <th>Total Caixas</th>
                   </tr>
                 </thead>
-                <tbody id="table-body"></tbody>
+                <tbody id="count-table-body"></tbody>
               </table>
             </div>
             <div class="table-footer">
               <div class="total">
-                Total geral do setor: <strong id="total-geral">0</strong>
+                Total geral do setor: <strong id="count-total-geral">0</strong>
               </div>
               <div class="actions">
-                <button id="export-btn" class="ghost">Exportar CSV</button>
-                <button id="clear-btn" class="danger">Limpar contagem</button>
+                <button id="count-export-btn" class="ghost">Exportar CSV</button>
+                <button id="count-clear-btn" class="danger">Limpar contagem</button>
               </div>
             </div>
           </section>
@@ -145,6 +214,6 @@
       </section>
     </div>
 
-    <script src="assets/app.js"></script>
   </body>
+  <script src="assets/app.js"></script>
 </html>

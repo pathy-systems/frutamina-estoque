@@ -33,6 +33,11 @@ body {
   margin: 4px 0 8px;
 }
 
+.subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
 
 
 .logo {
@@ -56,6 +61,62 @@ body {
   border-radius: 999px;
   font-weight: 600;
   font-size: 14px;
+}
+
+.menu {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 20px 0 28px;
+}
+
+.menu .user-chip {
+  margin-left: auto;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.modal-card {
+  position: relative;
+  z-index: 1;
+  width: min(520px, 92vw);
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.modal-body {
+  display: grid;
+  gap: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
 }
 
 .card {
@@ -139,6 +200,44 @@ textarea {
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 16px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.row-actions button {
+  padding: 6px 12px;
+}
+
+.row-selected {
+  background: #e0f2fe;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.mode-tag {
+  background: #fde68a;
+  color: #7c2d12;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13px;
 }
 
 button {
